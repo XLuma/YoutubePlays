@@ -23,7 +23,7 @@ Because the program is essentially fetching messages the same way a normal viewe
 - Joysticks ?? (unlikely)
 
 # Credits
-* [**LuanRT**] for [YouTube.js]
+* [**LuanRT**][YouTube.js]
 * [**Chooks22**] for the speed patch
 
 [YouTube.js]: https://github.com/LuanRT/YouTube.js
