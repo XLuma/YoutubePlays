@@ -17,22 +17,10 @@ Because the program is essentially fetching messages the same way a normal viewe
 - `node main.js`
 
 # Button Layout
-Due to the lack of config files currently, the button layout is hardcoded inside the program. It goes as follow, left being button and right being keyboard key, with a representation of what a chatter should type in chat for it to be recognized:
-- Button A: A ("a")
-- Button B: B ("b")
-- Button X: X ("x")
-- Button Y: Y ("y")
-- Up: up arrow ("up")
-- Down: down arrow ("down")
-- Left: left arrow ("left")
-- Right: right arrow ("right")
-- Start: s ("start")(to avoid trolling, theres a 1.25 chance that start does something when typed. Can be disabled)
-- Select: q ("select")
-- Right Shoulder: r ("RS")
-- Left Shoulder: l ("LS")
+The button layout can be edited in the json file present in the config folder. the right hand side defines the chat message, and the left hand side defines the key to press when said message is detected. Feel free to edit those parameters to your liking. Make sure your game is configured to the same keys you set the config to press.
 
 # TODO
-- Add configuration files for button layouts and other important settings(High prio, getting it done asap)
+- ~~Add configuration files for button layouts and other important settings(High prio, getting it done asap)~~ DONE
 - Integrate the whole thing with Truffle.vip
 - Try and include a patch that removes the modifications
 - Joysticks ?? (unlikely)
