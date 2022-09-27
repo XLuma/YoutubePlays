@@ -16,6 +16,19 @@ Because the program is essentially fetching messages the same way a normal viewe
 - `tsc --p tsconfig.json`
 - `node main.js`
 
+# Button Layout
+Due to the lack of config files currently, the button layout is hardcoded inside the program. It goes as follow, left being button and right being keyboard key, with a representation of what a chatter should type in chat for it to be recognized:
+- Button A: A ("a")
+- Button B: B ("b")
+- Up: up arrow ("up")
+- Down: down arrow ("down")
+- Left: left arrow ("left")
+- Right: right arrow ("right")
+- Start: s ("start")(to avoid trolling, theres a 1.25 chance that start does something when typed. Can be disabled)
+- Select: x ("select")
+- Right Shoulder: r ("RS")
+- Left Shoulder: l ("LS")
+
 # TODO
 - Add configuration files for button layouts and other important settings(High prio, getting it done asap)
 - Integrate the whole thing with Truffle.vip
