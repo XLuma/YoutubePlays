@@ -64,7 +64,7 @@ function randomIntFromInterval(min, max) { // min and max included
             `${item.as(LiveChatTextMessage).message.toString()}\n`
           );
           var text = item.as(LiveChatTextMessage).message.toString();
-          switch (text){
+          switch (text.toLowerCase()){
             case "up":
               //keyboard.pressKey(Key.Up);
               robot.keyTap("up");
@@ -89,13 +89,19 @@ function randomIntFromInterval(min, max) { // min and max included
                 robot.keyTap("s");
               break;
             case "select":
-              robot.keyTap("x");
+              robot.keyTap("q");
               break;
-            case "RS":
+            case "rs":
               robot.keyTap("r");
               break;
-            case "LS":
+            case "ls":
               robot.keyTap("l");
+              break;
+            case "x":
+              robot.keyTap("x");
+              break;
+            case "y":
+              robot.keyTap("y");
               break;
             default:
               break;
