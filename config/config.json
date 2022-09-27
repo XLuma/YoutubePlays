@@ -1,0 +1,16 @@
+{
+    "buttons": {
+        "a": "a",
+        "b": "b",
+        "x": "x",
+        "y": "y",
+        "rs": "r",
+        "ls": "l",
+        "start": "s",
+        "select": "q",
+        "up": "up",
+        "down": "down",
+        "left": "left",
+        "right": "right"
+    }
+}
