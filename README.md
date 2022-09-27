@@ -24,6 +24,6 @@ Because the program is essentially fetching messages the same way a normal viewe
 
 # Credits
 * [**LuanRT (YouTube.js)**][YouTube.js]
-* [**Chooks22 (speed patch)**]
+* **Chooks22 (speed patch)**
 
 [YouTube.js]: https://github.com/LuanRT/YouTube.js
