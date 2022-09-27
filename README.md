@@ -1,5 +1,5 @@
 # YoutubePlays
-A nodeJS program to control a game using Youtube Chat
+A nodeJS program to control a game using Youtube Chat. Works the same way as Twitch Plays programs, without using Google's shitty API (no limitations !)
 
 # Setup
 - Clone the repository (or download with the green button)
