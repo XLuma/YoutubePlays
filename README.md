@@ -21,6 +21,7 @@ The button layout can be edited in the json file present in the config folder. t
 
 # TODO
 - ~~Add configuration files for button layouts and other important settings(High prio, getting it done asap)~~ DONE
+- Add options to configure how many messages to process, the timing per batch... Controlling the chat chaos essentially (High prio)
 - Integrate the whole thing with Truffle.vip
 - Try and include a patch that removes the modifications
 - Joysticks ?? (unlikely)
