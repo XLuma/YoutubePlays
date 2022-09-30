@@ -70,7 +70,7 @@ function randomIntFromInterval(min: any, max: any) { // min and max included
 						`${hours} - ${item.as(LiveChatTextMessage).author?.name.toString()}:\n` +
 						`${item.as(LiveChatTextMessage).message.toString()}\n`
 					);
-					var text = item.as(LiveChatTextMessage).message.toString();
+					var text = item.as(LiveChatTextMessage).message.toString().toLowerCase();
 					if (text in buttons.buttons)
 					{
                         if (text == "start")
