@@ -10,30 +10,37 @@ import MarkChatItemAsDeletedAction from 'youtubei.js/dist/src/parser/classes/liv
 import LiveChatTextMessage from 'youtubei.js/dist/src/parser/classes/livechat/items/LiveChatTextMessage';
 import LiveChatPaidMessage from 'youtubei.js/dist/src/parser/classes/livechat/items/LiveChatPaidMessage';
 import { Key, keyboard } from '@nut-tree/nut-js';
+import { exit } from 'process';
 const robot = require("robotjs");
 const prompt = require("prompt-sync")({ sigint: true });
 const fs = require('fs');
 
 console.log("\nWelcome to YoutubePlays, by XLuma!\n");
-const liveId = prompt("Enter a livestream video id (hint: you can get it from the url, after the 'watch?'");
 
 keyboard.config.autoDelayMs = 0;
 function randomIntFromInterval(min: any, max: any) { // min and max included 
 	return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
+var streamerControl = 0; //kind of a switch to let the streamer take control of chat
+
+
 (async () => {
+	var config: any;
+	fs.readFile('config/config.json', 'utf8', function (err: any, data: any) {
+		if (err) throw err; // we'll not consider error handling for now
+		config = JSON.parse(data);
+		if (config.liveId == "")
+		{
+			console.log("No liveId found ! Add your liveId to the config.json file inside the config folder");
+			exit(1);
+		}
+	});
 	const yt = await Innertube.create({ cache: new UniversalCache() });
-	var buttons: any;
-	const info = await yt.getInfo(liveId);
+	const info = await yt.getInfo(config.liveId);
 
 	const livechat = await info.getLiveChat();
 	
-	fs.readFile('config/config.json', 'utf8', function (err: any, data: any) {
-		if (err) throw err; // we'll not consider error handling for now
-		buttons = JSON.parse(data);
-		console.log(buttons.buttons);
-	});
 	
 	livechat.on('start', (initial_data: LiveChatContinuation) => {
 		/**
@@ -71,15 +78,22 @@ function randomIntFromInterval(min: any, max: any) { // min and max included
 						`${item.as(LiveChatTextMessage).message.toString()}\n`
 					);
 					var text = item.as(LiveChatTextMessage).message.toString().toLowerCase();
-					if (text in buttons.buttons)
+					if (text in config.buttons && streamerControl == 0)
 					{
-                        if (text == "start")
+                        if (text == "start" && config.delayStartButton == "true")
                         {
                             if (randomIntFromInterval(1, 25) == 10) //inspired from twitch plays program doug made for alpharad to prevent stupid trolling. comment this line to disable
-                                robot.keyTap(buttons.buttons[text]);
+                                robot.keyTap(config.buttons[text]);
                         }
                         else
-                            robot.keyTap(buttons.buttons[text]);
+                            robot.keyTap(config.buttons[text]);
+					}
+					if (text == "control" && item.as(LiveChatTextMessage).author?.name.toString() == config.streamerName)
+					{
+						if (streamerControl == 1)
+							streamerControl = 0; //lets chat take control of game
+						else
+							streamerControl = 1; //pauses message processing
 					}
 					break;
 				case 'LiveChatPaidMessage':

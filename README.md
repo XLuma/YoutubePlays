@@ -7,7 +7,8 @@ A nodeJS program to control a game using Youtube Chat. Works the same way as Twi
 - Open a terminal, and use the `cd` command with the path to access the folder containing the project. example: `cd C:/Users/XLuma/Desktop/YoutubePlays` (hint: you can right click the folder selector in Window's file explorer, and copy the path as text and paste it)
 - In your terminal, run `npm install`. It may take a couple minutes to finish.
 - Run `npx tsc --p tsconfig.json`. A new file main.js will be created.
-- Run `node main.js`. The program will ask for an ID. This ID is your video ID, which you can get from the url of a livestream in a web browser.
+- Edit the file in the config folder to your liking, and configure your game's button mapping.
+- Run `node main.js`.
 - Soon messages will start appearing in the terminal, this is your chat. Configure your game's input, leave the window in focus, and sit back :)
 
 # Making the program receive messages faster
@@ -16,9 +17,14 @@ Because the program is essentially fetching messages the same way a normal viewe
 - `npx tsc --p tsconfig.json`
 - `node main.js`
 
-# Button Layout
-The button layout can be edited in the json file present in the config folder. the right hand side defines the chat message, and the left hand side defines the key to press when said message is detected. Feel free to edit those parameters to your liking. Make sure your game is configured to the same keys you set the config to press.
-I recommend also making sure that everything on the right hand side is in lowercases, as it makes analyzing easier. Your chat does not need to type in all lowercase.
+# Config
+A configuration file is present in the config folder. This file allows you to change a few settings like the message/button mapping, live id's and such. Here is a table: 
+```
+liveId: Before starting the program, paste your liveId in this field. It will be used at startup to fetch messages.
+streamerName: Type your YOUTUBE username in this field. In doing so, you can type "control" in chat to switch between chat control or your control
+delayStartButton: Set to false by default. Set it to true if you want to apply a restriction on the start button to avoid chat spamming start and doing shit.
+buttons: This is the message and button layout. Editing the left side allows to edit messages to analyze (must be lowercase), the right side if to set which keys should be pressed when the associated message is processed.
+```
 
 # TODO
 - ~~Add configuration files for button layouts and other important settings(High prio, getting it done asap)~~ DONE
