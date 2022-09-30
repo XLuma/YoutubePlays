@@ -18,6 +18,7 @@ Because the program is essentially fetching messages the same way a normal viewe
 
 # Button Layout
 The button layout can be edited in the json file present in the config folder. the right hand side defines the chat message, and the left hand side defines the key to press when said message is detected. Feel free to edit those parameters to your liking. Make sure your game is configured to the same keys you set the config to press.
+I recommend also making sure that everything on the right hand side is in lowercases, as it makes analyzing easier. Your chat does not need to type in all lowercase.
 
 # TODO
 - ~~Add configuration files for button layouts and other important settings(High prio, getting it done asap)~~ DONE
