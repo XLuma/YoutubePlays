@@ -2,6 +2,7 @@
     "liveId": "",
     "streamerName": "",
     "delayStartButton": "false",
+    "startButton": "start",
     "buttons": {
         "a": "a",
         "b": "b",
