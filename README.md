@@ -32,7 +32,7 @@ buttons: This is the message and button layout. Editing the left side allows to 
 ```
 
 # Troubleshooting
-On windows, running npm install might fail. This is because of the dependency RobotJS needing Visual Studio build tools to be installed. If you get a giant wall of errors when running npm install, download the buildtools from Microsoft at this link[Buildtools]. Once it is done preparing, tick "Visual C++ Build Tools" in the top right, and proceed with the installation. Once it is done, rerun npm install and everything should work.
+On windows, running npm install might fail. This is because of the dependency RobotJS needing Visual Studio build tools to be installed. If you get a giant wall of errors when running npm install, download the buildtools from Microsoft at this [link]. Once it is done preparing, tick "Visual C++ Build Tools" in the top right, and proceed with the installation. Once it is done, rerun npm install and everything should work.
 
 
 # TODO
@@ -47,4 +47,4 @@ On windows, running npm install might fail. This is because of the dependency Ro
 * **Chooks22 (speed patch)**
 
 [YouTube.js]: https://github.com/LuanRT/YouTube.js
-[Buildtools]: https://aka.ms/vs/15/release/vs_buildtools.exe
+[link]: https://aka.ms/vs/15/release/vs_buildtools.exe
