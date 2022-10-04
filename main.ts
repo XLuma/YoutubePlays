@@ -80,7 +80,7 @@ var streamerControl = 0; //kind of a switch to let the streamer take control of 
 					var text = item.as(LiveChatTextMessage).message.toString().toLowerCase();
 					if (text in config.buttons && streamerControl == 0)
 					{
-                        if (text == "start" && config.delayStartButton == "true")
+                        if (text == config.startButton && config.delayStartButton == "true")
                         {
                             if (randomIntFromInterval(1, 25) == 10) //inspired from twitch plays program doug made for alpharad to prevent stupid trolling. comment this line to disable
                                 robot.keyTap(config.buttons[text]);

@@ -21,10 +21,19 @@ Because the program is essentially fetching messages the same way a normal viewe
 A configuration file is present in the config folder. This file allows you to change a few settings like the message/button mapping, live id's and such. Here is a table: 
 ```
 liveId: Before starting the program, paste your liveId in this field. It will be used at startup to fetch messages.
+
 streamerName: Type your YOUTUBE username in this field. In doing so, you can type "control" in chat to switch between chat control or your control
+
 delayStartButton: Set to false by default. Set it to true if you want to apply a restriction on the start button to avoid chat spamming start and doing shit.
+
+startButton: Type here the key that is used for the start button. This option is only useful if delayStartButton is set to true.
+
 buttons: This is the message and button layout. Editing the left side allows to edit messages to analyze (must be lowercase), the right side if to set which keys should be pressed when the associated message is processed.
 ```
+
+# Troubleshooting
+On windows, running npm install might fail. This is because of the dependency RobotJS needing Visual Studio build tools to be installed. If you get a giant wall of errors when running npm install, download the buildtools from Microsoft at this [link]. Once it is done preparing, tick "Visual C++ Build Tools" in the top right, and proceed with the installation. Once it is done, rerun npm install and everything should work.
+
 
 # TODO
 - ~~Add configuration files for button layouts and other important settings(High prio, getting it done asap)~~ DONE
@@ -38,3 +47,4 @@ buttons: This is the message and button layout. Editing the left side allows to 
 * **Chooks22 (speed patch)**
 
 [YouTube.js]: https://github.com/LuanRT/YouTube.js
+[link]: https://aka.ms/vs/15/release/vs_buildtools.exe
