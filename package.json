@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@nut-tree/nut-js": "^2.3.0",
+    "better-queue": "^3.8.12",
     "es6": "^0.0.7",
     "node-config": "^0.0.2",
     "patch-package": "^6.4.7",
