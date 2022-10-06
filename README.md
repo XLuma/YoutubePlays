@@ -28,6 +28,8 @@ delayStartButton: Set to false by default. Set it to true if you want to apply a
 
 startButton: Type here the key that is used for the start button. This option is only useful if delayStartButton is set to true.
 
+keyboardDelay: This setting sets how much type the program waits before pressing a new key. Default is 10 milliseconds, the lower it is the faster keys will be pressed. I don't recommend setting it to 0.
+
 buttons: This is the message and button layout. Editing the left side allows to edit messages to analyze (must be lowercase), the right side if to set which keys should be pressed when the associated message is processed.
 ```
 

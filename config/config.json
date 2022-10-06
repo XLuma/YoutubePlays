@@ -3,6 +3,7 @@
     "streamerName": "",
     "delayStartButton": "false",
     "startButton": "start",
+    "keyboardDelay": 10,
     "buttons": {
         "a": "a",
         "b": "b",

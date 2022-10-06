@@ -9,21 +9,19 @@ import MarkChatItemAsDeletedAction from 'youtubei.js/dist/src/parser/classes/liv
 
 import LiveChatTextMessage from 'youtubei.js/dist/src/parser/classes/livechat/items/LiveChatTextMessage';
 import LiveChatPaidMessage from 'youtubei.js/dist/src/parser/classes/livechat/items/LiveChatPaidMessage';
-import { Key, keyboard } from '@nut-tree/nut-js';
 import { exit } from 'process';
 const robot = require("robotjs");
 const prompt = require("prompt-sync")({ sigint: true });
 const fs = require('fs');
+const Queue = require('better-queue');
 
 console.log("\nWelcome to YoutubePlays, by XLuma!\n");
 
-keyboard.config.autoDelayMs = 0;
 function randomIntFromInterval(min: any, max: any) { // min and max included 
 	return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
 var streamerControl = 0; //kind of a switch to let the streamer take control of chat
-
 
 (async () => {
 	var config: any;
@@ -35,6 +33,7 @@ var streamerControl = 0; //kind of a switch to let the streamer take control of 
 			console.log("No liveId found ! Add your liveId to the config.json file inside the config folder");
 			exit(1);
 		}
+		robot.setKeyboardDelay(config.keyboardDelay);
 	});
 	const yt = await Innertube.create({ cache: new UniversalCache() });
 	const info = await yt.getInfo(config.liveId);
