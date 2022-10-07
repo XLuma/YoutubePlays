@@ -12,6 +12,8 @@ A nodeJS program to control a game using Youtube Chat. Works the same way as Twi
 - Soon messages will start appearing in the terminal, this is your chat. Configure your game's input, leave the window in focus, and sit back :)
 
 # Making the program receive messages faster
+PS: Since 10/7/2022: A configurable queue has been implemented, therefore rendering those patches a little bit useless. You can still apply it if you wish to though.
+
 Because the program is essentially fetching messages the same way a normal viewer would, sometimes the program will hang a bit before receiving more data (about a couple seconds). This might break the immersion. To fix this, a patch is included that when applied, virtually makes the program 20x faster. I highly recommend this, but be warned **it will also consume a lot more bandwidth**. This should not be an issue for most people, unless you have slow internet or plan to run this on a server (which you shouldnt). To apply the patch, simply open a terminal in the project's directory, and run these commands:
 - `npx patch-package`
 - `npx tsc --p tsconfig.json`
@@ -28,7 +30,9 @@ delayStartButton: Set to false by default. Set it to true if you want to apply a
 
 startButton: Type here the key that is used for the start button. This option is only useful if delayStartButton is set to true.
 
-keyboardDelay: This setting sets how much type the program waits before pressing a new key. Default is 10 milliseconds, the lower it is the faster keys will be pressed. I don't recommend setting it to 0.
+keyboardDelay: This setting sets how much type the program waits before pressing a new key. Default is 10 milliseconds, the lower it is the faster keys will be pressed. I don't recommend setting it to 0, nor changing it.
+
+messageInterval: This setting configures the interval between each message to be processed, in milliseconds. The lower the number, the faster messages will be processed but the delay to fetch new messages will be very noticeable. Default is 500 (0.5s).
 
 buttons: This is the message and button layout. Editing the left side allows to edit messages to analyze (must be lowercase), the right side if to set which keys should be pressed when the associated message is processed.
 ```

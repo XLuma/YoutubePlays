@@ -10,21 +10,52 @@ import MarkChatItemAsDeletedAction from 'youtubei.js/dist/src/parser/classes/liv
 import LiveChatTextMessage from 'youtubei.js/dist/src/parser/classes/livechat/items/LiveChatTextMessage';
 import LiveChatPaidMessage from 'youtubei.js/dist/src/parser/classes/livechat/items/LiveChatPaidMessage';
 import { exit } from 'process';
+import Actions from 'youtubei.js/dist/src/core/Actions';
 const robot = require("robotjs");
 const prompt = require("prompt-sync")({ sigint: true });
 const fs = require('fs');
-const Queue = require('better-queue');
-
-console.log("\nWelcome to YoutubePlays, by XLuma!\n");
 
 function randomIntFromInterval(min: any, max: any) { // min and max included 
 	return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-var streamerControl = 0; //kind of a switch to let the streamer take control of chat
+function processQueueNormal(){
+	//queue is adding new things at the bottom, so here we need to use index 0 and then remove with shift
+	if (!queue[0])
+		return;
+	let text = queue[0].message.toString().toLowerCase();
+					
+	if (text in config.buttons && streamerControl == 0)
+	{
+		if (text == config.startButton && config.delayStartButton == "true")
+		{
+			if (randomIntFromInterval(1, 25) == 10) //inspired from twitch plays program doug made for alpharad to prevent stupid trolling. comment this line to disable
+				robot.keyTap(config.buttons[text]);
+		}
+		else
+			robot.keyTap(config.buttons[text]);
+	}
+	if (text == "control" && queue[0].author?.name.toString() == config.streamerName)
+	{
+		if (streamerControl == 1)
+			streamerControl = 0; //lets chat take control of game
+		else
+			streamerControl = 1; //pauses message processing
+	}
+	console.log(queue[0].author?.name.toString() +": " + text);
+	queue.shift();
+}
+
+
+console.log("\nWelcome to YoutubePlays, by XLuma!\n");
+
+let streamerControl = 0; //kind of a switch to let the streamer take control of chat
+let queue: Array<LiveChatTextMessage> = [ ];
+let queueLenght: number;
+let task: NodeJS.Timer;
+let config: any;
 
 (async () => {
-	var config: any;
 	fs.readFile('config/config.json', 'utf8', function (err: any, data: any) {
 		if (err) throw err; // we'll not consider error handling for now
 		config = JSON.parse(data);
@@ -37,19 +68,14 @@ var streamerControl = 0; //kind of a switch to let the streamer take control of 
 	});
 	const yt = await Innertube.create({ cache: new UniversalCache() });
 	const info = await yt.getInfo(config.liveId);
-
 	const livechat = await info.getLiveChat();
-	
 	
 	livechat.on('start', (initial_data: LiveChatContinuation) => {
 		/**
 		 * Initial info is what you see when you first open a Live Chat — this is; inital actions (pinned messages, top donations..), account's info and so on.
 		 */
-		 
 		console.info(`Hey ${initial_data.viewer_name || 'N/A'}, welcome to Live Chat!`);
-		
 	});
-	
 	livechat.on('chat-update', (action: ChatAction) => {
 		/**
 		 * An action represents what is being added to
@@ -58,10 +84,9 @@ var streamerControl = 0; //kind of a switch to let the streamer take control of 
 		 *
 		 * Below are a few examples of how this can be used.
 		 */
-
 		if (action.is(AddChatItemAction)) {
 			const item = action.as(AddChatItemAction).item;
-	 
+			
 			if (!item)
 				return console.info('Action did not have an item.', action);
 			
@@ -72,28 +97,14 @@ var streamerControl = 0; //kind of a switch to let the streamer take control of 
 			
 			switch (item.type) {
 				case 'LiveChatTextMessage':
-					console.info(
-						`${hours} - ${item.as(LiveChatTextMessage).author?.name.toString()}:\n` +
-						`${item.as(LiveChatTextMessage).message.toString()}\n`
-					);
-					var text = item.as(LiveChatTextMessage).message.toString().toLowerCase();
-					if (text in config.buttons && streamerControl == 0)
-					{
-                        if (text == config.startButton && config.delayStartButton == "true")
-                        {
-                            if (randomIntFromInterval(1, 25) == 10) //inspired from twitch plays program doug made for alpharad to prevent stupid trolling. comment this line to disable
-                                robot.keyTap(config.buttons[text]);
-                        }
-                        else
-                            robot.keyTap(config.buttons[text]);
-					}
-					if (text == "control" && item.as(LiveChatTextMessage).author?.name.toString() == config.streamerName)
-					{
-						if (streamerControl == 1)
-							streamerControl = 0; //lets chat take control of game
-						else
-							streamerControl = 1; //pauses message processing
-					}
+					//console.info(
+					//	`${hours} - ${item.as(LiveChatTextMessage).author?.name.toString()}:\n` +
+					//	`${item.as(LiveChatTextMessage).message.toString()}\n`
+					//);
+					if (!task)
+						task = setInterval(processQueueNormal, config.messageInterval);
+					queueLenght = queue.push(item.as(LiveChatTextMessage));
+					console.log(queueLenght);
 					break;
 				case 'LiveChatPaidMessage':
 					console.info(
@@ -105,12 +116,10 @@ var streamerControl = 0; //kind of a switch to let the streamer take control of 
 					console.debug(action);
 					break;
 			}
-		}
-			
+		}	
 		if (action.is(MarkChatItemAsDeletedAction)) {
 			console.warn(`Message ${action.target_item_id} just got deleted and should be replaced with ${action.deleted_state_message.toString()}!`, '\n');
 		}
 	});
-
 	livechat.start();
 })();
