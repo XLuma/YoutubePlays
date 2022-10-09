@@ -11,6 +11,7 @@ import LiveChatTextMessage from 'youtubei.js/dist/src/parser/classes/livechat/it
 import LiveChatPaidMessage from 'youtubei.js/dist/src/parser/classes/livechat/items/LiveChatPaidMessage';
 import { exit } from 'process';
 import Actions from 'youtubei.js/dist/src/core/Actions';
+import { emitKeypressEvents } from 'readline';
 const robot = require("robotjs");
 const prompt = require("prompt-sync")({ sigint: true });
 const fs = require('fs');
@@ -19,6 +20,26 @@ function randomIntFromInterval(min: any, max: any) { // min and max included
 	return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
+
+function processQueueDemocratic(){
+	let tempQueue: Array<string> = [ ];
+	tempQueue = queueDemocratic.sort();
+	//empty current queue
+	queueDemocratic = []; //should work
+	//gotta figure out which word in the current queue has been spammed the most
+	const maxValue = tempQueue.reduce((previous, current, i, arr) => {
+		if (
+		  arr.filter(item => item === previous).length >
+		  arr.filter(item => item === current).length
+		) {
+		  return previous;
+		} else {
+		  return current;
+		}
+	  });
+	robot.keyTap(config.buttons[maxValue]);
+	tempQueue = [ ];
+}
 function processQueueNormal(){
 	//queue is adding new things at the bottom, so here we need to use index 0 and then remove with shift
 	if (!queue[0])
@@ -42,6 +63,13 @@ function processQueueNormal(){
 		else
 			streamerControl = 1; //pauses message processing
 	}
+	else if (text == "democratic" && queue[0].author?.name.toString() == config.streamerName)
+	{
+		//enable democratic mode
+		clearInterval(task);
+		setTimeout(processQueueDemocratic, config.democraticDelay);
+		toggleDemocraticMode = 1;
+	}
 	console.log(queue[0].author?.name.toString() +": " + text);
 	queue.shift();
 }
@@ -51,9 +79,11 @@ console.log("\nWelcome to YoutubePlays, by XLuma!\n");
 
 let streamerControl = 0; //kind of a switch to let the streamer take control of chat
 let queue: Array<LiveChatTextMessage> = [ ];
+let queueDemocratic: Array<string> = [ ];
 let queueLenght: number;
 let task: NodeJS.Timer;
 let config: any;
+let toggleDemocraticMode = 0;
 
 (async () => {
 	fs.readFile('config/config.json', 'utf8', function (err: any, data: any) {
@@ -97,12 +127,24 @@ let config: any;
 			
 			switch (item.type) {
 				case 'LiveChatTextMessage':
-					//console.info(
-					//	`${hours} - ${item.as(LiveChatTextMessage).author?.name.toString()}:\n` +
-					//	`${item.as(LiveChatTextMessage).message.toString()}\n`
-					//);
 					if (!task)
-						task = setInterval(processQueueNormal, config.messageInterval);
+					{
+						if (toggleDemocraticMode == 1)
+						{
+							task = setTimeout(processQueueDemocratic, config.democraticDelay); //this should let the queue fill up for 5 seconds and then sort it, and make a move
+						}
+						else
+							task = setInterval(processQueueNormal, config.messageInterval);
+					}
+					if (toggleDemocraticMode == 1)
+					{
+						if (item.as(LiveChatTextMessage).message.toString().toLowerCase() == "anarchy" && item.as(LiveChatTextMessage).author?.name.toString() == config.streamerName)
+						{
+							clearInterval(task);
+							task = setInterval(processQueueNormal, config.messageInterval);
+						}
+						queueLenght = queueDemocratic.push(item.as(LiveChatTextMessage).message.toString().toLowerCase());
+					}
 					queueLenght = queue.push(item.as(LiveChatTextMessage));
 					console.log(queueLenght);
 					break;

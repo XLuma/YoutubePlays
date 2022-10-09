@@ -5,6 +5,7 @@
     "startButton": "start",
     "keyboardDelay": 10,
     "messageInterval": 500,
+    "democraticDelay": 5000,
     "buttons": {
         "a": "a",
         "b": "b",

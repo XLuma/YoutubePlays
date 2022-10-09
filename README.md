@@ -34,6 +34,8 @@ keyboardDelay: This setting sets how much type the program waits before pressing
 
 messageInterval: This setting configures the interval between each message to be processed, in milliseconds. The lower the number, the faster messages will be processed but the delay to fetch new messages will be very noticeable. Default is 500 (0.5s).
 
+democraticDelay: This setting configures the behavior of the "Democratic" mode. When activated by the streamer with the "democratic" command, chat inputs will no longer be executed; rather, all inputs will be put into a queue that will determine the command with the highest rate of messages in the given time determined by this parameter, and execute it. Default is 5000 ms (5 seconds), adjust to taste.
+
 buttons: This is the message and button layout. Editing the left side allows to edit messages to analyze (must be lowercase), the right side if to set which keys should be pressed when the associated message is processed.
 ```
 
