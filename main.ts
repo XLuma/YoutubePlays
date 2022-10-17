@@ -80,7 +80,7 @@ console.log("\nWelcome to YoutubePlays, by XLuma!\n");
 let streamerControl = 0; //kind of a switch to let the streamer take control of chat
 let queue: Array<LiveChatTextMessage> = [ ];
 let queueDemocratic: Array<string> = [ ];
-let queueLenght: number;
+let queueLength: number;
 let task: NodeJS.Timer;
 let config: any;
 let toggleDemocraticMode = 0;
@@ -143,10 +143,10 @@ let toggleDemocraticMode = 0;
 							clearInterval(task);
 							task = setInterval(processQueueNormal, config.messageInterval);
 						}
-						queueLenght = queueDemocratic.push(item.as(LiveChatTextMessage).message.toString().toLowerCase());
+						queueLength = queueDemocratic.push(item.as(LiveChatTextMessage).message.toString().toLowerCase());
 					}
-					queueLenght = queue.push(item.as(LiveChatTextMessage));
-					console.log(queueLenght);
+					queueLength = queue.push(item.as(LiveChatTextMessage));
+					console.log(queueLength);
 					break;
 				case 'LiveChatPaidMessage':
 					console.info(
