@@ -12,14 +12,15 @@ import LiveChatPaidMessage from 'youtubei.js/dist/src/parser/classes/livechat/it
 import { exit } from 'process';
 import Actions from 'youtubei.js/dist/src/core/Actions';
 import { emitKeypressEvents } from 'readline';
+import config from './config/config.json'
 const robot = require("robotjs");
 const prompt = require("prompt-sync")({ sigint: true });
-const fs = require('fs');
+
+const buttons = config.buttons as Record<string, string>
 
 function randomIntFromInterval(min: any, max: any) { // min and max included 
 	return Math.floor(Math.random() * (max - min + 1) + min)
 }
-
 
 function processQueueDemocratic(){
 	let tempQueue: Array<string> = [ ];
@@ -37,7 +38,7 @@ function processQueueDemocratic(){
 		  return current;
 		}
 	  });
-	robot.keyTap(config.buttons[maxValue]);
+	robot.keyTap(buttons[maxValue]);
 	tempQueue = [ ];
 }
 function processQueueNormal(){
@@ -51,10 +52,10 @@ function processQueueNormal(){
 		if (text == config.startButton && config.delayStartButton == "true")
 		{
 			if (randomIntFromInterval(1, 25) == 10) //inspired from twitch plays program doug made for alpharad to prevent stupid trolling. comment this line to disable
-				robot.keyTap(config.buttons[text]);
+				robot.keyTap(buttons[text]);
 		}
 		else
-			robot.keyTap(config.buttons[text]);
+			robot.keyTap(buttons[text]);
 	}
 	if (text == "control" && queue[0].author?.name.toString() == config.streamerName)
 	{
@@ -80,25 +81,19 @@ console.log("\nWelcome to YoutubePlays, by XLuma!\n");
 let streamerControl = 0; //kind of a switch to let the streamer take control of chat
 let queue: Array<LiveChatTextMessage> = [ ];
 let queueDemocratic: Array<string> = [ ];
-let queueLenght: number;
+let queueLength: number;
 let task: NodeJS.Timer;
-let config: any;
 let toggleDemocraticMode = 0;
 
 (async () => {
-	fs.readFile('config/config.json', 'utf8', function (err: any, data: any) {
-		if (err) throw err; // we'll not consider error handling for now
-		config = JSON.parse(data);
-		if (config.liveId == "")
-		{
-			console.log("No liveId found ! Add your liveId to the config.json file inside the config folder");
-			exit(1);
-		}
-		robot.setKeyboardDelay(config.keyboardDelay);
-	});
+	if (!config.liveId || config.liveId.trim().length === 0) {
+		console.log("No liveId found ! Add your liveId to the config.json file inside the config folder");
+		exit(1);
+	}
+	robot.setKeyboardDelay(config.keyboardDelay);
 	const yt = await Innertube.create({ cache: new UniversalCache() });
 	const info = await yt.getInfo(config.liveId);
-	const livechat = await info.getLiveChat();
+	const livechat = info.getLiveChat();
 	
 	livechat.on('start', (initial_data: LiveChatContinuation) => {
 		/**
@@ -143,10 +138,10 @@ let toggleDemocraticMode = 0;
 							clearInterval(task);
 							task = setInterval(processQueueNormal, config.messageInterval);
 						}
-						queueLenght = queueDemocratic.push(item.as(LiveChatTextMessage).message.toString().toLowerCase());
+						queueLength = queueDemocratic.push(item.as(LiveChatTextMessage).message.toString().toLowerCase());
 					}
-					queueLenght = queue.push(item.as(LiveChatTextMessage));
-					console.log(queueLenght);
+					queueLength = queue.push(item.as(LiveChatTextMessage));
+					console.log(queueLength);
 					break;
 				case 'LiveChatPaidMessage':
 					console.info(
