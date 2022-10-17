@@ -1,7 +1,6 @@
 {
   "dependencies": {
     "@nut-tree/nut-js": "^2.3.0",
-    "@types/better-queue": "^3.8.3",
     "better-queue": "^3.8.12",
     "es6": "^0.0.7",
     "node-config": "^0.0.2",
@@ -9,12 +8,13 @@
     "pnpm": "^7.12.2",
     "prompt-sync": "^4.2.0",
     "robotjs": "^0.6.0",
-    "typescript": "^4.8.3",
     "youtubei.js": "^2.2.3"
   },
   "name": "youtubeplays",
   "version": "1.0.0",
   "devDependencies": {
-    "@types/node": "^18.7.18"
+    "@types/better-queue": "^3.8.3",
+    "@types/node": "^18.7.18",
+    "typescript": "^4.8.4"
   }
 }
