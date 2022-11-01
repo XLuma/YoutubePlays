@@ -45,14 +45,16 @@ On windows, running npm install might fail. This is because of the dependency Ro
 
 # TODO
 - ~~Add configuration files for button layouts and other important settings(High prio, getting it done asap)~~ DONE
-- Add options to configure how many messages to process, the timing per batch... Controlling the chat chaos essentially (High prio)
+- ~~Add options to configure how many messages to process, the timing per batch... Controlling the chat chaos essentially (High prio)~~ DONE
+- Remove patches (Delay bug fixed in new version of youtube.js)
+- Add Electron support -> Create UI for the program (either React or NX)
 - Integrate the whole thing with Truffle.vip
-- Try and include a patch that removes the modifications
 - Joysticks ?? (unlikely)
 
 # Credits
 * [**LuanRT (YouTube.js)**][YouTube.js]
 * **Chooks22 (speed patch)**
+* **TimerClock14 for help with frontend and general fixes**
 
 [YouTube.js]: https://github.com/LuanRT/YouTube.js
 [link]: https://aka.ms/vs/15/release/vs_buildtools.exe
