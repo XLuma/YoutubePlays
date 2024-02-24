@@ -49,7 +49,7 @@ function processQueueNormal(){
 		return;
 	let text = queue[0].message.toString().toLowerCase();
 					
-	if (text in config.buttons && streamerControl == 0)
+	if (text.toLowerCase() in config.buttons && streamerControl == 0)
 	{
 		if (text == config.startButton && config.delayStartButton == "true")
 		{
