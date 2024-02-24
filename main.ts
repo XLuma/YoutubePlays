@@ -38,7 +38,8 @@ function processQueueDemocratic(){
 		  return current;
 		}
 	  });
-	robot.keyTap(buttons[maxValue]);
+	  robot.keyToggle(buttons[maxValue], 'down');
+	  robot.keyToggle(buttons[maxValue], 'up');
 	tempQueue = [ ];
 }
 
