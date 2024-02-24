@@ -41,6 +41,7 @@ function processQueueDemocratic(){
 	robot.keyTap(buttons[maxValue]);
 	tempQueue = [ ];
 }
+
 function processQueueNormal(){
 	//queue is adding new things at the bottom, so here we need to use index 0 and then remove with shift
 	if (!queue[0])
@@ -55,7 +56,8 @@ function processQueueNormal(){
 				robot.keyTap(buttons[text]);
 		}
 		else
-			robot.keyTap(buttons[text]);
+			robot.keyToggle(buttons[text], 'down');
+			robot.keyToggle(buttons[text], 'up');
 	}
 	if (text == "control" && queue[0].author?.name.toString() == config.streamerName)
 	{
@@ -92,7 +94,9 @@ let toggleDemocraticMode = 0;
 	}
 	robot.setKeyboardDelay(config.keyboardDelay);
 	const yt = await Innertube.create({ cache: new UniversalCache() });
+	console.log(config.liveId)
 	const info = await yt.getInfo(config.liveId);
+	console.log(info)
 	const livechat = info.getLiveChat();
 	
 	livechat.on('start', (initial_data: LiveChatContinuation) => {
