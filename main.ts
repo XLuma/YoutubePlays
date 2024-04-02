@@ -1,4 +1,4 @@
-import { Innertube, UniversalCache } from 'youtubei.js';
+import { Innertube, UniversalCache, YTNodes } from 'youtubei.js';
 import { LiveChatContinuation } from 'youtubei.js/dist/src/parser';
 
 import LiveChat, { ChatAction, LiveMetadata } from 'youtubei.js/dist/src/parser/youtube/LiveChat';
@@ -85,7 +85,7 @@ let streamerControl = 0; //kind of a switch to let the streamer take control of 
 let queue: Array<LiveChatTextMessage> = [ ];
 let queueDemocratic: Array<string> = [ ];
 let queueLength: number;
-let task: NodeJS.Timer;
+let task: NodeJS.Timeout;
 let toggleDemocraticMode = 0;
 
 (async () => {
@@ -94,7 +94,7 @@ let toggleDemocraticMode = 0;
 		exit(1);
 	}
 	robot.setKeyboardDelay(config.keyboardDelay);
-	const yt = await Innertube.create({ cache: new UniversalCache() });
+	const yt = await Innertube.create({ cache: new UniversalCache(false), generate_session_locally: true });
 	console.log(config.liveId)
 	const info = await yt.getInfo(config.liveId);
 	console.log(info)
@@ -114,8 +114,8 @@ let toggleDemocraticMode = 0;
 		 *
 		 * Below are a few examples of how this can be used.
 		 */
-		if (action.is(AddChatItemAction)) {
-			const item = action.as(AddChatItemAction).item;
+		if (action.is(YTNodes.AddChatItemAction)) {
+			const item = action.as(YTNodes.AddChatItemAction).item;
 			
 			if (!item)
 				return console.info('Action did not have an item.', action);
@@ -138,20 +138,20 @@ let toggleDemocraticMode = 0;
 					}
 					if (toggleDemocraticMode == 1)
 					{
-						if (item.as(LiveChatTextMessage).message.toString().toLowerCase() == "anarchy" && item.as(LiveChatTextMessage).author?.name.toString() == config.streamerName)
+						if (item.as(YTNodes.LiveChatTextMessage).message.toString().toLowerCase() == "anarchy" && (item.as(YTNodes.LiveChatTextMessage).author?.name.toString() == config.streamerName))
 						{
 							clearInterval(task);
 							task = setInterval(processQueueNormal, config.messageInterval);
 						}
-						queueLength = queueDemocratic.push(item.as(LiveChatTextMessage).message.toString().toLowerCase());
+						queueLength = queueDemocratic.push(item.as(YTNodes.LiveChatTextMessage).message.toString().toLowerCase());
 					}
-					queueLength = queue.push(item.as(LiveChatTextMessage));
+					queueLength = queue.push(item.as(YTNodes.LiveChatTextMessage));
 					console.log(queueLength);
 					break;
 				case 'LiveChatPaidMessage':
 					console.info(
-						`${hours} - ${item.as(LiveChatPaidMessage).author.name.toString()}:\n` +
-						`${item.as(LiveChatPaidMessage).purchase_amount}\n`
+						`${hours} - ${item.as(YTNodes.LiveChatPaidMessage).author.name.toString()}:\n` +
+						`${item.as(YTNodes.LiveChatPaidMessage).purchase_amount}\n`
 					);
 					break;
 				default:
@@ -159,8 +159,8 @@ let toggleDemocraticMode = 0;
 					break;
 			}
 		}	
-		if (action.is(MarkChatItemAsDeletedAction)) {
-			console.warn(`Message ${action.target_item_id} just got deleted and should be replaced with ${action.deleted_state_message.toString()}!`, '\n');
+		if (action.is(YTNodes.RemoveChatItemAction)) {
+			console.warn(`Message ${action.target_item_id} just got deleted!`, '\n');
 		}
 	});
 	livechat.start();
